@@ -24,7 +24,8 @@ public class WeatherRequestJob implements Job {
         try {
             Object cityCode = context.getJobDetail().getJobDataMap().get("cityCode");
             //免费天气预报接口返回15天的天气JSON格式：https://www.cnblogs.com/java888/p/11121987.html
-            URL url = new URL("http://t.weather.sojson.com/api/weather/city/" + cityCode);
+//            URL url = new URL("http://t.weather.sojson.com/api/weather/city/" + cityCode);
+            URL url = new URL("https://wangmaoxiong.blog.csdn.net/article/details/104340965");
             //通过 BeanFactoryAware 获取 spring 容器中的 bean
             RestTemplate restTemplate = BeanFactoryHelper.getBean(RestTemplate.class);
             //使用 RestTemplate 发送 http 请求

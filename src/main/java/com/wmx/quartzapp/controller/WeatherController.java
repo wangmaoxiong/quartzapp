@@ -33,7 +33,7 @@ public class WeatherController {
     public ResultData startWeatherRequestJob(@RequestParam String cityCode) {
         try {
             if (isStartRequestJob) {
-                return new ResultData(3,"任务已经在运行", null);
+                return new ResultData(3, "任务已经在运行", null);
             }
             //创建一个scheduler
             Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
@@ -41,7 +41,7 @@ public class WeatherController {
             //创建一个Trigger
             Trigger trigger = TriggerBuilder.newTrigger()
                     .withIdentity("trigger1", "group1")
-                    .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(60)
+                    .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(30)
                             .repeatForever()).build();
 
             //创建一个job
@@ -54,6 +54,8 @@ public class WeatherController {
             scheduler.scheduleJob(job, trigger);
             scheduler.start();
             isStartRequestJob = true;
+            ResultData resultData = new ResultData(ResultCode.SUCCESS, null);
+            System.out.println("resultData=" + resultData);
             return new ResultData(ResultCode.SUCCESS, null);
         } catch (SchedulerException e) {
             e.printStackTrace();
@@ -61,5 +63,10 @@ public class WeatherController {
         return new ResultData(3, "调度失败", null);
     }
 
+
+    @GetMapping("test")
+    public ResultData test() {
+        return new ResultData(3, "调度失败", null);
+    }
 }
 
