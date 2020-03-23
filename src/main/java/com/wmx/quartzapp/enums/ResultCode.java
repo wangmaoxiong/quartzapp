@@ -11,8 +11,8 @@ package com.wmx.quartzapp.enums;
 public enum ResultCode {
 
     /*成功状态码*/
-    SUCCESS(1, "成功"),
-    FAIL(2, "失败"),
+    SUCCESS(200, "成功"),
+    FAIL(201, "失败"),
 
     /*参数错误:1001-1999*/
     PARAM_IS_INVALID(1001, "参数无效"),
