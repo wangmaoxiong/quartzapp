@@ -3,7 +3,9 @@ package com.wmx.quartzapp.helloworld;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
-public class HelloTest {
+import java.util.concurrent.TimeUnit;
+
+public class HelloJobTest {
     public static void main(String[] args) throws SchedulerException, InterruptedException {
         //1）读取 classpath 下的 quartz.properties（不存在就都使用默认值）配置来实例化 Scheduler
         //可以在类路径下使用同名文件覆盖 quartz-x.x.x.jar 包下的 org\quartz\quartz.properties 属性文件
@@ -16,5 +18,8 @@ public class HelloTest {
         //4、将 jobDetail 与 trigger 注册到调度器 scheduler 并启动。
         scheduler.scheduleJob(jobDetail, cronTrigger);
         scheduler.start();
+
+        TimeUnit.MINUTES.sleep(1);//1分钟以后停掉调度器
+        scheduler.shutdown();
     }
 }
