@@ -11,6 +11,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author wangmaoxiong
  */
@@ -36,9 +40,11 @@ public class WeatherController {
     public ResultData startWeatherRequestJob(@RequestParam String cityCode) {
         //返回给页面的数据
         ResultData resultData = null;
+        Map<String, Object> dataMap = new HashMap<>(1);
+        dataMap.put("timeStamp", Instant.now().toEpochMilli());
         try {
             if (isStartRequestJob) {
-                return new ResultData(202, "任务已经在运行", null);
+                return new ResultData(202, "任务已经在运行", dataMap);
             }
             //1、读取 classpath 下的 quartz.properties（不存在就都使用默认值）配置来实例化 Scheduler
             //可以在类路径下使用同名文件覆盖 quartz-x.x.x.jar 包下的 org\quartz\quartz.properties 属性文件
@@ -53,6 +59,7 @@ public class WeatherController {
             //3、创建触发器，设置触发器名称与组名称，设置触发器的调度规则为每30秒触发一次，永远重复(repeatForever)
             Trigger trigger = TriggerBuilder.newTrigger()
                     .withIdentity("trigger_weather_1", "trigger_group_1")
+                    .startNow()
                     .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(30)
                             .repeatForever()).build();
 
@@ -61,10 +68,10 @@ public class WeatherController {
             scheduler.start();
 
             isStartRequestJob = true;
-            resultData = new ResultData(ResultCode.SUCCESS, null);
+            resultData = new ResultData(ResultCode.SUCCESS, dataMap);
         } catch (SchedulerException e) {
             logger.error(e.getMessage(), e);
-            resultData = new ResultData(202, e.getMessage(), null);
+            resultData = new ResultData(202, e.getMessage(), dataMap);
         }
         return resultData;
     }

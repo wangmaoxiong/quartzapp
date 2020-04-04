@@ -35,7 +35,7 @@ public class WeatherRequestJob implements Job {
             RestTemplate restTemplate = BeanFactoryHelper.getBean(RestTemplate.class);
             //使用 RestTemplate 发送 http 请求
             String forObject = restTemplate.getForObject(url.toURI(), String.class);
-            //将请求结果保存到桌面
+            //将请求结果保存到桌面，仅仅只是演示，实际中应该存入库中.
             File homeDirectory = FileSystemView.getFileSystemView().getHomeDirectory();
             homeDirectory = new File(homeDirectory, "weather");
             File dataFile = new File(homeDirectory, LocalDateTime.now().toString().replace(":", "") + ".json");
