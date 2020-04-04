@@ -17,7 +17,11 @@ public class HiJobTest {
             JobDetail jobDetail = JobBuilder.newJob(HiJob.class)
                     .withIdentity("hiJob", "hiJobGroup")
                     .usingJobData("url", "https://wangmaoxiong.blog.csdn.net/article/details/105057405")
+                    .requestRecovery(true)  //设置  job 遇到故障重启后，是否是可恢复的，默认为 false.
+                    .storeDurably(true)     //设置  job 是否是持久性的，默认为 false.
                     .build();
+
+            System.out.println(jobDetail.requestsRecovery());
 
             //3）设置触发器，设置触发器名称与所属组名，同组内的触发器名称必须唯一。
             // 为触发器添加数据，可以直接 usingJobData，也可以先 jobDetail.getJobDataMap(),然后 put
