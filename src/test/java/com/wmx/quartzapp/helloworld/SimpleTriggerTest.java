@@ -14,7 +14,7 @@ public class SimpleTriggerTest {
                     .withIdentity("haiJob3", "haiJobGroup")
                     .build();
 
-            Trigger trigger = getTrigger4();
+            Trigger trigger = getTrigger5();
 
             //注册任务详情与触发器，然后启动调度器
             scheduler.scheduleJob(jobDetail, trigger);
@@ -98,12 +98,30 @@ public class SimpleTriggerTest {
          * withIdentity(TriggerKey triggerKey)：设置触发器的名称以及所属组名称，同一组内的触发器名称必须唯一
          * repeatForever()：方法内部是将循环次数 repeatCount=-1; 即无限循环.直到 endTime 失效时间
          */
-        Trigger trigger = TriggerBuilder.newTrigger()
+        SimpleTrigger trigger = TriggerBuilder.newTrigger()
                 .startAt(DateBuilder.evenHourDateAfterNow())
                 .withIdentity(TriggerKey.triggerKey("myTrigger", "myTriggerGroup"))
                 .withSchedule(SimpleScheduleBuilder.simpleSchedule()
                         .withIntervalInHours(2)
                         .repeatForever())
+                .build();
+        return trigger;
+    }
+
+    /**
+     * 过期策略 misfireInstruction 使用
+     *
+     * @return
+     */
+    public static Trigger getTrigger5() {
+        //创建简单触发器，每 30 秒触发一次，使用 MISFIRE_INSTRUCTION_RESCHEDULE_NOW_WITH_EXISTING_REPEAT_COUNT 过期策略
+        SimpleTrigger trigger = TriggerBuilder.newTrigger()
+                .startNow()
+                .withIdentity(TriggerKey.triggerKey("myTrigger", "myTriggerGroup"))
+                .withSchedule(SimpleScheduleBuilder.simpleSchedule()
+                        .withIntervalInSeconds(30)
+                        .repeatForever()
+                        .withMisfireHandlingInstructionNowWithExistingCount())
                 .build();
         return trigger;
     }
