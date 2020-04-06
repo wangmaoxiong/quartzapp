@@ -3,7 +3,7 @@ package com.wmx.quartzapp.helloworld;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
-public class HaiJob3Test {
+public class SimpleTriggerTest {
     public static void main(String[] args) {
         try {
             /**1）创建调度器*/
@@ -103,8 +103,7 @@ public class HaiJob3Test {
                 .withIdentity(TriggerKey.triggerKey("myTrigger", "myTriggerGroup"))
                 .withSchedule(SimpleScheduleBuilder.simpleSchedule()
                         .withIntervalInHours(2)
-                        .repeatForever()
-                .withMisfireHandlingInstructionNextWithExistingCount())
+                        .repeatForever())
                 .build();
         return trigger;
     }
